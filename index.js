@@ -1,4 +1,12 @@
-var async = require('async');
+// jshint esversion:6
+'use strict';
+
+const async = require('async');
+const crypto = require('crypto');
+
+module.exports.hashUrl = function(url) {
+    return crypto.createHash('md5').update(url).digest("hex");
+};
 
 module.exports.promiseDelay = function(t) {
     return new Promise(function(resolve) {
@@ -147,6 +155,13 @@ module.exports.filename = function(fn) {
     return tfn.slice(tfn.lastIndexOf('/') + 1);
 };
 
+function _extension(s) {
+    var i = s.indexOf('.') + 1;
+    return i > 0 ? _extension(s.substring(i)) : s;
+}
+
+module.exports.extension = _extension;
+
 function _deDuplicate(data) {
     var result = [];
     data.map(function(item) {
@@ -191,6 +206,69 @@ module.exports.findRuns = function(data) {
             return result;
         }
     }).filter(function(n){ return n; });
+};
+
+var request = require('request-promise-native');
+
+module.exports.getHeaders = function(path) {
+    return new Promise(function(resolve, reject) {
+        var Url = require('url');
+
+        var url = null;
+        if (path.constructor.name === 'Url') {
+            url = path;
+        }
+        else {
+            url = Url.parse(path);
+        }
+
+        request.get({
+            method: 'HEAD',
+            uri: url.href
+        })
+        .on('response', function(response) {
+            resolve(response.headers);
+        })
+        .catch(function(error) {
+            reject(error);
+        });
+    });
+};
+
+var Url = require('url');
+var head = require('head-tail-stream');
+const arrayFromStream = require('./arrayFromStream');
+
+module.exports.getHead = function(path, n) {
+    let url = (path.constructor.name === 'Url') ? path : Url.parse(path);
+
+    return new Promise(function(resolve, reject) {
+        request({
+            method: 'GET',
+            uri: url.href
+        })
+        .pipe(head(n))
+        .pipe(arrayFromStream())
+        .on('data', function(lines) {
+            resolve(lines);
+        })
+        .on('error', function(error) {
+            reject(error);
+        });
+    });
+};
+
+module.exports.url = function(path) {
+    switch(path.constructor.name) {
+        case 'Url':
+        return path;
+
+        case 'String':
+        return Url.parse(path);
+
+        default:
+        return '';
+    }
 };
 
 
