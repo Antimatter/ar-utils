@@ -1,5 +1,5 @@
 {
-  "name": "utils",
+  "name": "ar-utils",
   "version": "1.0.0",
   "description": "Antimatter Utility Functions",
   "main": "index.js",
