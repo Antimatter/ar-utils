@@ -271,5 +271,22 @@ module.exports.url = function(path) {
     }
 };
 
+var fs = require('fs');
+
+module.exports.ls = function(dir, regex) {
+    return new Promise(function(resolve, reject) {
+        fs.readdir(dir, function(error, data) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(data.filter(function(x) {
+                    return x.match(regex);
+                }));
+            }
+        });
+    });
+};
+
+
 
 //console.log(findRuns([0,1,2,4,6,8,9,15,11,12,13]));
