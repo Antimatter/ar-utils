@@ -3,6 +3,20 @@
 
 const async = require('async');
 const crypto = require('crypto');
+const exec = require('child_process').exec;
+
+module.exports.gitRevision = function() {
+    return new Promise(function(resolve, reject) {
+        exec('git rev-parse --verify HEAD', function(error, stdout, stderr) {
+            if (error) {
+                reject(stderr);
+            }
+            else {
+                resolve(stdout);
+            }
+        });
+    });
+};
 
 module.exports.hashUrl = function(url) {
     return crypto.createHash('md5').update(url).digest("hex");
