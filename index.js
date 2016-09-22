@@ -319,9 +319,9 @@ module.exports.fsStat = function(path) {
     });
 };
 
-module.exports.fsWriteFile = function(data, path) {
+module.exports.fsWriteFile = function(path, data) {
     return new Promise(function(resolve, reject) {
-        fs.writeFile(data, path, function(error) {
+        fs.writeFile(path, data, function(error) {
             if (error) {
                 reject(error);
             } else {
