@@ -169,12 +169,18 @@ module.exports.filename = function(fn) {
     return tfn.slice(tfn.lastIndexOf('/') + 1);
 };
 
-function _extension(s) {
-    var i = s.indexOf('.') + 1;
-    return i > 0 ? _extension(s.substring(i)) : s;
-}
 
-module.exports.extension = _extension;
+// function _extension(s) {
+//     var i = s.indexOf('.') + 1;
+//     return i > 0 ? _extension(s.substring(i)) : s;
+// }
+//
+// module.exports.oldExt = _extension;
+
+module.exports.extension = function(s) {
+    var ext = s.match(/\.[^\.]*$/);
+    return ext ? ext[0].substring(1) : null;
+};
 
 function _deDuplicate(data) {
     var result = [];
