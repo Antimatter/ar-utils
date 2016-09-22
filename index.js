@@ -287,6 +287,30 @@ module.exports.ls = function(dir, regex) {
     });
 };
 
+module.exports.fsStat = function(path) {
+    return new Promise(function(resolve, reject) {
+        fs.stat(path, function(error, stats) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(stats.isFile());
+            }
+        });
+    });
+};
+
+module.exports.fsWriteFile = function(data, path) {
+    return new Promise(function(resolve, reject) {
+        fs.writeFile(data, path, function(error) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve();
+            }
+        });
+    });
+};
+
 
 
 //console.log(findRuns([0,1,2,4,6,8,9,15,11,12,13]));
