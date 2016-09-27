@@ -331,6 +331,18 @@ module.exports.fsWriteFile = function(path, data) {
     });
 };
 
+module.exports.fsReadFile = function(path) {
+    return new Promise(function(resolve, reject) {
+        fs.readFile(path, function(error, data) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
+
 
 
 //console.log(findRuns([0,1,2,4,6,8,9,15,11,12,13]));
