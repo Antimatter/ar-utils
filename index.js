@@ -159,13 +159,11 @@ module.exports.endsWith = function(s, e) {
 
 module.exports.basename = function(fn) {
     var tfn = fn[fn.length - 1] === '/' ? fn.slice(0, fn.length - 1) : fn;
-    console.log(tfn);
     return tfn.slice(tfn.lastIndexOf('/') + 1);
 };
 
 module.exports.filename = function(fn) {
     var tfn = fn[fn.length - 1] === '/' ? fn.slice(fn.length - 1, fn.length) : fn;
-    console.log(tfn);
     return tfn.slice(tfn.lastIndexOf('/') + 1);
 };
 
