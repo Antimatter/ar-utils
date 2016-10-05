@@ -61,15 +61,16 @@ module.exports.promiseRetry = function(pf, times, interval) {
                 .then(function(msg) {
                     callback(null, {msg: msg, count: count});
                 })
-                .catch(function() {
+                .catch(function(err) {
                     count++;
-                    callback(true);
+                    //callback(true);
+                    callback(err);
                 });
             },
 
             function(error, result) {
                 if (error) {
-                    reject('retry error, count:' + count);
+                    reject(error + ', retries:' + count);
                 }
                 else {
                     resolve(result);
