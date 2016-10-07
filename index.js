@@ -342,6 +342,29 @@ module.exports.fsReadFile = function(path) {
     });
 };
 
+module.exports.fsRmdir = function(path) {
+    return new Promise(function(resolve, reject) {
+        fs.rmdir(path, function(error) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve();
+            }
+        });
+    });
+};
+
+module.exports.fsUnlink = function(path) {
+    return new Promise(function(resolve, reject) {
+        fs.unlink(path, function(error) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve();
+            }
+        });
+    });
+};
 
 
 //console.log(findRuns([0,1,2,4,6,8,9,15,11,12,13]));
