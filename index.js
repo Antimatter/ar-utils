@@ -59,7 +59,8 @@ module.exports.promiseRetry = function(pf, times, interval) {
             function(callback) {
                 pf()
                 .then(function(msg) {
-                    callback(null, {msg: msg, count: count});
+                    msg.count = count;
+                    callback(null, msg);
                 })
                 .catch(function(err) {
                     count++;
