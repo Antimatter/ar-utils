@@ -145,7 +145,10 @@ module.exports.promiseWhilst = function(check, pf) {
             function(callback) {
                 pf()
                 .then(function() { callback(); } )
-                .catch(function(error) { callback(error); });
+                .catch(function(error) {
+                    if (error) callback(error);
+                    else callback('promiseWhilst err');
+                });
             },
             function(error) {
                 if (error) reject(error);
