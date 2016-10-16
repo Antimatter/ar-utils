@@ -29,39 +29,51 @@ module.exports.promiseDelay = function(t) {
 };
 
 module.exports.promiseFilter = function(A, pf) {
-    return new Promise(function(resolve) {
+    return new Promise(function(resolve, reject) {
         async.filter(
             A,
             function(a, callback) {
                 pf(a)
                 .then(function(keep) {
-                    callback(keep);
+                    callback(null, keep);
                 })
                 .catch(function(error) {
-                    console.error('unexpected rejection in promiseFilter:', error);
-                    callback(false);
+                    callback(error);
                 });
             },
-            resolve
+            function(error, result) {
+                if (error) {
+                    reject(error);
+                }
+                else {
+                    resolve(result);
+                }
+            }
         );
     });
 };
 
 module.exports.promiseFilterSeries = function(A, pf) {
-    return new Promise(function(resolve) {
+    return new Promise(function(resolve, reject) {
         async.filterSeries(
             A,
             function(a, callback) {
                 pf(a)
                 .then(function(keep) {
-                    callback(keep);
+                    callback(null, keep);
                 })
                 .catch(function(error) {
-                    console.error('unexpected rejection in promiseFilter:', error);
-                    callback(false);
+                    callback(error);
                 });
             },
-            resolve
+            function(error, result) {
+                if (error) {
+                    reject(error);
+                }
+                else {
+                    resolve(result);
+                }
+            }
         );
     });
 };

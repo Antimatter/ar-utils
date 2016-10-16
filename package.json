@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/antimatterresearch/utils#readme",
   "dependencies": {
+    "async": "^2.1.1",
     "head-tail-stream": "^0.1.2",
     "request": "^2.75.0",
     "request-promise-native": "^1.0.3"
