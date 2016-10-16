@@ -28,6 +28,44 @@ module.exports.promiseDelay = function(t) {
     });
 };
 
+module.exports.promiseFilter = function(A, pf) {
+    return new Promise(function(resolve) {
+        async.filter(
+            A,
+            function(a, callback) {
+                pf(a)
+                .then(function(keep) {
+                    callback(keep);
+                })
+                .catch(function(error) {
+                    console.error('unexpected rejection in promiseFilter:', error);
+                    callback(false);
+                });
+            },
+            resolve
+        );
+    });
+};
+
+module.exports.promiseFilterSeries = function(A, pf) {
+    return new Promise(function(resolve) {
+        async.filterSeries(
+            A,
+            function(a, callback) {
+                pf(a)
+                .then(function(keep) {
+                    callback(keep);
+                })
+                .catch(function(error) {
+                    console.error('unexpected rejection in promiseFilter:', error);
+                    callback(false);
+                });
+            },
+            resolve
+        );
+    });
+};
+
 module.exports.promiseMapSeries = function(A, pf) {
     return new Promise(function(resolve, reject) {
         async.mapSeries(
